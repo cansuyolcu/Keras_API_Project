@@ -168,3 +168,106 @@ There are many LendingClub data sets on Kaggle. Here is the information on this 
 
 
 ```python 
+
+import pandas as pd
+data_info = pd.read_csv('../DATA/lending_club_info.csv',index_col='LoanStatNew')
+print(data_info.loc['revol_util']['Description'])
+```
+Revolving line utilization rate, or the amount of credit the borrower is using relative to all available revolving credit.
+
+```python
+def feat_info(col_name):
+    print(data_info.loc[col_name]['Description'])
+feat_info('mort_acc')
+```
+Number of mortgage accounts.
+
+
+## Loading the data and other imports
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+%matplotlib inline
+
+df = pd.read_csv('../DATA/lending_club_loan_two.csv')
+
+df.info()
+
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90667484-846d2900-e257-11ea-9400-f10b436df8e9.png" width = 300>
+
+
+## EDA
+```python
+sns.countplot(x='loan_status',data=df)
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90667904-e29a0c00-e257-11ea-98fa-4dfc000c9dcf.png" width = 400>
+
+```python
+plt.figure(figsize=(12,4))
+sns.distplot(df['loan_amnt'],kde=False,bins=40)
+plt.xlim(0,45000)
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90668006-0b220600-e258-11ea-8fdf-8a919b6fd113.png" width = 600>
+
+```python
+df.corr()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90668140-4290b280-e258-11ea-9739-39710704df55.png" width = 1000>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
