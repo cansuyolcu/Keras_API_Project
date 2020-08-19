@@ -350,13 +350,32 @@ df['loan_repaid'] = df['loan_status'].map({'Fully Paid':1,'Charged Off':0})
 df[['loan_repaid','loan_status']]
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90670502-f5aedb00-e25b-11ea-805d-59d175a8024b.png" width = 300>
+<img src= "https://user-images.githubusercontent.com/66487971/90670502-f5aedb00-e25b-11ea-805d-59d175a8024b.png" width = 200>
 
 ```python
 df.corr()['loan_repaid'].sort_values().drop('loan_repaid').plot(kind='bar')
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90670502-f5aedb00-e25b-11ea-805d-59d175a8024b.png" width = 200>
+<img src= "https://user-images.githubusercontent.com/66487971/90671086-dbc1c800-e25c-11ea-8791-6d7a9a366824.png" width = 200>
+
+##  Data PreProcessing
+
+```python
+df.isnull().sum()
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90671250-1b88af80-e25d-11ea-82a1-5d38bdd72e22.png = 200>
+         
+## Converting this Series to be in term of percentage of the total DataFrame
+
+```python
+
+100* df.isnull().sum()/len(df)
+
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90671641-a9fd3100-e25d-11ea-90ab-b503253647d2.png" width = 200>
+
+
 
 
 
