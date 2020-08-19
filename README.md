@@ -610,7 +610,7 @@ df['home_ownership'].value_counts()
 ```
 
 
-<img src= "https://user-images.githubusercontent.com/66487971/90678158-fdc04800-e266-11ea-9163-9c1cf4284e78.png" width = 150>
+<img src= "https://user-images.githubusercontent.com/66487971/90678158-fdc04800-e266-11ea-9163-9c1cf4284e78.png" width = 350>
 
 
 ```python
