@@ -356,7 +356,7 @@ df[['loan_repaid','loan_status']]
 df.corr()['loan_repaid'].sort_values().drop('loan_repaid').plot(kind='bar')
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90671086-dbc1c800-e25c-11ea-8791-6d7a9a366824.png" width = 200>
+<img src= "https://user-images.githubusercontent.com/66487971/90671086-dbc1c800-e25c-11ea-8791-6d7a9a366824.png" width = 500>
 
 ##  Data PreProcessing
 
@@ -373,7 +373,36 @@ df.isnull().sum()
 
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90671641-a9fd3100-e25d-11ea-90ab-b503253647d2.png" width = 200>
+<img src= "https://user-images.githubusercontent.com/66487971/90671641-a9fd3100-e25d-11ea-90ab-b503253647d2.png" width = 300>
+
+## I examine emp_title and emp_length to see whether it will be okay to drop them.
+
+```python
+feat_info('emp_title')
+print('\n')
+feat_info('emp_length')
+```
+The job title supplied by the Borrower when applying for the loan.
+
+
+Employment length in years. Possible values are between 0 and 10 where 0 means less than one year and 10 means ten or more years. 
+
+```python
+df['emp_title'].nunique()
+```
+173105
+
+```python
+df['emp_title'].value_counts()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90673237-1bd67a00-e260-11ea-943a-ba9a96e0c2dc.png" width = 300>
+
+**there are too many unique job titles to try to convert this to a dummy variable feature.
+
+
+
+
 
 
 
