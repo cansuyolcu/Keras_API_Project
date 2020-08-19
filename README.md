@@ -373,7 +373,7 @@ df.isnull().sum()
 
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90671641-a9fd3100-e25d-11ea-90ab-b503253647d2.png" width = 300>
+<img src= "https://user-images.githubusercontent.com/66487971/90671641-a9fd3100-e25d-11ea-90ab-b503253647d2.png" width = 200>
 
 ## I examine emp_title and emp_length to see whether it will be okay to drop them.
 
@@ -396,9 +396,82 @@ df['emp_title'].nunique()
 df['emp_title'].value_counts()
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90673237-1bd67a00-e260-11ea-943a-ba9a96e0c2dc.png" width = 300>
+<img src= "https://user-images.githubusercontent.com/66487971/90673237-1bd67a00-e260-11ea-943a-ba9a96e0c2dc.png" width = 400>
 
-**there are too many unique job titles to try to convert this to a dummy variable feature.
+**There are too many unique job titles to try to convert this to a dummy variable feature.**
+
+```python
+
+df = df.drop('emp_title',axis=1)
+
+```
+**Sorting the order of the values.**
+
+```python
+sorted(df['emp_length'].dropna().unique())
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90673693-c484d980-e260-11ea-901e-b12a80eab34a.png" width = 200>
+
+```python
+
+emp_length_order = [ '< 1 year',
+                      '1 year',
+                     '2 years',
+                     '3 years',
+                     '4 years',
+                     '5 years',
+                     '6 years',
+                     '7 years',
+                     '8 years',
+                     '9 years',
+                     '10+ years']
+```
+
+
+
+```python
+
+plt.figure(figsize=(12,4))
+
+sns.countplot(x='emp_length',data=df,order=emp_length_order)
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90674061-46750280-e261-11ea-87f4-5045d5e73e1e.png" width = 700>
+
+```python
+plt.figure(figsize=(12,4))
+sns.countplot(x='emp_length',data=df,order=emp_length_order,hue='loan_status')
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90674197-715f5680-e261-11ea-95ad-8c52bcbfb029.png" width = 700>
+
+
+**Creating percentage of charge offs per category.**
+
+```python
+
+emp_co = df[df['loan_status']=="Charged Off"].groupby("emp_length").count()['loan_status']
+emp_fp = df[df['loan_status']=="Fully Paid"].groupby("emp_length").count()['loan_status']
+emp_len = emp_co/emp_fp
+emp_len
+
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90674454-d2872a00-e261-11ea-9609-a2b3b2242bf6.png" width = 150>
+
+```python
+
+emp_len.plot(kind='bar')
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90674616-07937c80-e262-11ea-939c-80ec908c18cf.png" width = 500>
+
+
+
+
+
+
 
 
 
