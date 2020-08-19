@@ -411,7 +411,7 @@ df = df.drop('emp_title',axis=1)
 sorted(df['emp_length'].dropna().unique())
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90673693-c484d980-e260-11ea-901e-b12a80eab34a.png" width = 200>
+<img src= "https://user-images.githubusercontent.com/66487971/90673693-c484d980-e260-11ea-901e-b12a80eab34a.png" width = 100>
 
 ```python
 
@@ -458,14 +458,217 @@ emp_len
 
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90674454-d2872a00-e261-11ea-9609-a2b3b2242bf6.png" width = 150>
+<img src= "https://user-images.githubusercontent.com/66487971/90674454-d2872a00-e261-11ea-9609-a2b3b2242bf6.png" width = 300>
 
 ```python
 
 emp_len.plot(kind='bar')
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90674616-07937c80-e262-11ea-939c-80ec908c18cf.png" width = 500>
+<img src= "https://user-images.githubusercontent.com/66487971/90674616-07937c80-e262-11ea-939c-80ec908c18cf.png" width = 400>
+
+
+**Charge off rates are extremely similar across all employment lengths.**
+
+```python
+df = df.drop('emp_length',axis=1)
+```
+
+```python
+
+df.isnull().sum()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90675030-9e603900-e262-11ea-982a-33924d58c94f.png" width = 200>
+
+```python
+df['purpose'].head(10)
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90675356-04e55700-e263-11ea-88b4-c73a7a50e8ac.png" width = 250>
+
+```python
+df['title'].head(10)
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90675413-1af31780-e263-11ea-8859-ed2278c218f7.png" width = 200>
+
+**The title column is simply a string subcategory/description of the purpose column.**
+
+```python
+df = df.drop('title',axis=1)
+```
+
+```python
+feat_info('mort_acc')
+```
+Number of mortgage accounts.
+
+
+```python
+df['mort_acc'].value_counts()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90675764-9359d880-e263-11ea-9f07-1f9b72e6f052.png" width = 250>
+
+**Checking correlations to fill the empty values
+
+```python
+print("Correlation with the mort_acc column")
+df.corr()['mort_acc'].sort_values()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90675913-cac88500-e263-11ea-897d-eaa594260c8c.png" width = 300>
+
+**Looks like the total_acc feature correlates with the mort_acc**
+
+```python
+
+print("Mean of mort_acc column per total_acc")
+df.groupby('total_acc').mean()['mort_acc']
+
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90676336-85588780-e264-11ea-88cf-3eca049e35a9.png" width = 350>
+
+**Filling in the missing mort_acc values based on their total_acc value.**
+
+```python
+total_acc_avg = df.groupby('total_acc').mean()['mort_acc']
+```
+
+```python
+
+def fill_mort_acc(total_acc,mort_acc):
+  
+    if np.isnan(mort_acc):
+        return total_acc_avg[total_acc]
+    else:
+        return mort_acc
+        
+```
+
+
+```python
+        
+      df['mort_acc'] = df.apply(lambda x: fill_mort_acc(x['total_acc'], x['mort_acc']), axis=1)
+      
+      df.isnull().sum()
+        
+ ```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90676607-f4ce7700-e264-11ea-8643-24e1718f42c4.png" width = 200>
+
+
+**revol_util and the pub_rec_bankruptcies have missing data points, but they account for less than 0.5% of the total data.**
+
+```python
+df = df.dropna()
+```
+
+## Categorical Variables and Dummy Variables
+
+```python
+df.select_dtypes(['object']).columns
+```
+Index(['term', 'grade', 'sub_grade', 'home_ownership', 'verification_status',
+       'issue_d', 'loan_status', 'purpose', 'earliest_cr_line',
+       'initial_list_status', 'application_type', 'address'],
+      dtype='object')
+      
+```python
+df['term'].value_counts()      
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90677310-dae16400-e265-11ea-8610-a9376fc5dfeb.png" width = 200>
+
+```python
+df['term'] = df['term'].apply(lambda term: int(term[:3]))
+```
+
+```python
+df = df.drop('grade',axis=1)
+```
+```python
+subgrade_dummies = pd.get_dummies(df['sub_grade'],drop_first=True)
+df = pd.concat([df.drop('sub_grade',axis=1),subgrade_dummies],axis=1)
+df.columns
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90677646-53482500-e266-11ea-8545-9f6b4d6acb29.png" width = 600>
+
+```python
+df.select_dtypes(['object']).columns
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90677951-bc2f9d00-e266-11ea-855e-cbffbfcda536.png" width = 600>
+
+```python
+dummies = pd.get_dummies(df[['verification_status', 'application_type','initial_list_status','purpose' ]],drop_first=True)
+df = df.drop(['verification_status', 'application_type','initial_list_status','purpose'],axis=1)
+df = pd.concat([df,dummies],axis=1)
+```
+
+```python
+df['home_ownership'].value_counts()
+```
+
+
+<img src= "https://user-images.githubusercontent.com/66487971/90678158-fdc04800-e266-11ea-9163-9c1cf4284e78.png" width = 150>
+
+
+```python
+
+df['home_ownership']=df['home_ownership'].replace(['NONE', 'ANY'], 'OTHER')
+
+dummies = pd.get_dummies(df['home_ownership'],drop_first=True)
+df = df.drop('home_ownership',axis=1)
+df = pd.concat([df,dummies],axis=1)
+
+```
+
+```python
+df['zip_code'] = df['address'].apply(lambda address:address[-5:])
+```
+
+
+```python
+
+dummies = pd.get_dummies(df['zip_code'],drop_first=True)
+df = df.drop(['zip_code','address'],axis=1)
+df = pd.concat([df,dummies],axis=1)
+
+```
+**issue_d would be a data leakage.**
+
+
+```python
+df = df.drop('issue_d',axis=1)
+```
+
+**Extracting the year**
+
+```python
+
+df['earliest_cr_year'] = df['earliest_cr_line'].apply(lambda date:int(date[-4:]))
+df = df.drop('earliest_cr_line',axis=1)
+
+df.select_dtypes(['object']).columns
+
+df = df.drop('loan_status',axis=1)
+
+```
+
+## Train Test Split
+
+```python
+from sklearn.model_selection import train_test_split
+
+X = df.drop('loan_repaid',axis=1).values
+y = df['loan_repaid'].values
+```
+
+
+
+
+
+
 
 
 
