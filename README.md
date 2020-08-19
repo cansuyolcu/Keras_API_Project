@@ -198,7 +198,7 @@ df = pd.read_csv('../DATA/lending_club_loan_two.csv')
 df.info()
 
 ```
-<img src= "https://user-images.githubusercontent.com/66487971/90667484-846d2900-e257-11ea-9400-f10b436df8e9.png" width = 300>
+<img src= "https://user-images.githubusercontent.com/66487971/90667484-846d2900-e257-11ea-9400-f10b436df8e9.png" width = 900>
 
 
 ## EDA
@@ -221,6 +221,14 @@ df.corr()
 ```
 
 <img src= "https://user-images.githubusercontent.com/66487971/90668140-4290b280-e258-11ea-9739-39710704df55.png" width = 1000>
+
+```python
+plt.figure(figsize=(12,7))
+sns.heatmap(df.corr(),annot=True,cmap='viridis')
+plt.ylim(10, 0)
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90668375-ad41ee00-e258-11ea-9708-c1a17ef96503.png" width = 1000>
+
 
 
 
