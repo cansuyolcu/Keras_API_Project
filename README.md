@@ -347,8 +347,16 @@ array(['Fully Paid', 'Charged Off'], dtype=object)
 ```python
 
 df['loan_repaid'] = df['loan_status'].map({'Fully Paid':1,'Charged Off':0})
+df[['loan_repaid','loan_status']]
+```
 
+<img src= "https://user-images.githubusercontent.com/66487971/90670502-f5aedb00-e25b-11ea-805d-59d175a8024b.png" width = 300>
 
+```python
+df.corr()['loan_repaid'].sort_values().drop('loan_repaid').plot(kind='bar')
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90670502-f5aedb00-e25b-11ea-805d-59d175a8024b.png" width = 200>
 
 
 
