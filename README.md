@@ -666,6 +666,131 @@ y = df['loan_repaid'].values
 
 
 
+```python
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=101)
+```
+
+## Normalizing the Data
+
+```python
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+```
+
+## Creating the Model
+
+```python
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation,Dropout
+from tensorflow.keras.constraints import max_norm
+```
+
+```python
+model = Sequential()
+
+
+
+# input layer
+model.add(Dense(78,  activation='relu'))
+model.add(Dropout(0.2))
+
+# hidden layer
+model.add(Dense(39, activation='relu'))
+model.add(Dropout(0.2))
+
+# hidden layer
+model.add(Dense(19, activation='relu'))
+model.add(Dropout(0.2))
+
+# output layer
+model.add(Dense(units=1,activation='sigmoid'))
+
+# Compile model
+model.compile(loss='binary_crossentropy', optimizer='adam')
+```
+
+
+```python
+model.fit(x=X_train, 
+          y=y_train, 
+          epochs=25,
+          batch_size=256,
+          validation_data=(X_test, y_test), 
+          )
+```
+Train on 316175 samples, validate on 79044 samples
+
+<img src= "https://user-images.githubusercontent.com/66487971/90679098-59d79c00-e268-11ea-881f-411aed01211e.png" width = 1000>
+
+
+```python
+
+from tensorflow.keras.models import load_model
+model.save('full_data_project_model.h5')  
+```
+
+## Evaluating Model Performance.
+
+```python
+losses = pd.DataFrame(model.history.history)
+losses[['loss','val_loss']].plot()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90679415-ce123f80-e268-11ea-9eac-de6ea8207938.png" width = 400>
+
+```python
+
+from sklearn.metrics import classification_report,confusion_matrix
+predictions = model.predict_classes(X_test)
+print(classification_report(y_test,predictions))
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90679510-f69a3980-e268-11ea-8028-75872c29fc18.png" width = 500>
+
+
+```python
+confusion_matrix(y_test,predictions)
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90679724-41b44c80-e269-11ea-99a3-f094e0a8d402.png" width = 300>
+
+**Predicting for a customer**
+
+```python
+
+import random
+random.seed(101)
+random_ind = random.randint(0,len(df))
+
+new_customer = df.drop('loan_repaid',axis=1).iloc[random_ind]
+new_customer
+
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90679932-a53e7a00-e269-11ea-8b25-62b1c8792a48.png" width = 350>
+
+```python
+model.predict_classes(new_customer.values.reshape(1,78))
+```
+array([[1]])
+
+**Checking the answer**
+
+```python
+df.iloc[random_ind]['loan_repaid']
+```
+1.0
+
+
+# This concludes my project here. Thanks for readingg all the way through.
+
+
+
+
+
 
 
 
