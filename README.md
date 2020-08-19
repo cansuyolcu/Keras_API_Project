@@ -198,7 +198,7 @@ df = pd.read_csv('../DATA/lending_club_loan_two.csv')
 df.info()
 
 ```
-<img src= "https://user-images.githubusercontent.com/66487971/90667484-846d2900-e257-11ea-9400-f10b436df8e9.png" width = 900>
+<img src= "https://user-images.githubusercontent.com/66487971/90667484-846d2900-e257-11ea-9400-f10b436df8e9.png" width = 300>
 
 
 ## EDA
@@ -227,7 +227,93 @@ plt.figure(figsize=(12,7))
 sns.heatmap(df.corr(),annot=True,cmap='viridis')
 plt.ylim(10, 0)
 ```
-<img src= "https://user-images.githubusercontent.com/66487971/90668375-ad41ee00-e258-11ea-9708-c1a17ef96503.png" width = 1000>
+<img src= "https://user-images.githubusercontent.com/66487971/90668375-ad41ee00-e258-11ea-9708-c1a17ef96503.png" width =860>
+
+I have noticed almost perfect correlation with the "installment" feature.
+
+```python
+feat_info('installment')
+```
+The monthly payment owed by the borrower if the loan originates.
+
+```python
+feat_info('loan_amnt')
+```
+The listed amount of the loan applied for by the borrower. If at some point in time, the credit department reduces the loan amount, then it will be reflected in this value.
+
+```python
+
+sns.scatterplot(x='installment',y='loan_amnt',data=df,)
+
+```
+<img src= "https://user-images.githubusercontent.com/66487971/90669167-df078480-e259-11ea-953a-057b8af681cf.png" width =350>
+
+```python
+sns.boxplot(x='loan_status',y='loan_amnt',data=df)
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90669258-02323400-e25a-11ea-8141-56b53951504d.png" width =350>
+
+```python
+df.groupby('loan_status')['loan_amnt'].describe()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90669312-2130c600-e25a-11ea-8826-6606d20ecb96.png" width = 300>
+
+```python
+sorted(df['grade'].unique())
+```
+['A', 'B', 'C', 'D', 'E', 'F', 'G']
+
+```python
+
+sorted(df['sub_grade'].unique())
+
+```
+
+['A1',
+ 'A2',
+ 'A3',
+ 'A4',
+ 'A5',
+ 'B1',
+ 'B2',
+ 'B3',
+ 'B4',
+ 'B5',
+ 'C1',
+ 'C2',
+ 'C3',
+ 'C4',
+ 'C5',
+ 'D1',
+ 'D2',
+ 'D3',
+ 'D4',
+ 'D5',
+ 'E1',
+ 'E2',
+ 'E3',
+ 'E4',
+ 'E5',
+ 'F1',
+ 'F2',
+ 'F3',
+ 'F4',
+ 'F5',
+ 'G1',
+ 'G2',
+ 'G3',
+ 'G4',
+ 'G5']
+ 
+ 
+
+
+
+
+
+
 
 
 
