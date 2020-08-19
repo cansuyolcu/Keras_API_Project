@@ -258,7 +258,7 @@ sns.boxplot(x='loan_status',y='loan_amnt',data=df)
 df.groupby('loan_status')['loan_amnt'].describe()
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/90669312-2130c600-e25a-11ea-8826-6606d20ecb96.png" width = 300>
+<img src= "https://user-images.githubusercontent.com/66487971/90669312-2130c600-e25a-11ea-8826-6606d20ecb96.png" width = 700>
 
 ```python
 sorted(df['grade'].unique())
@@ -306,6 +306,69 @@ sorted(df['sub_grade'].unique())
  'G3',
  'G4',
  'G5']
+ 
+ ```python
+ sns.countplot(x='grade',data=df,hue='loan_status')
+ ```
+ 
+ <img src= "https://user-images.githubusercontent.com/66487971/90669906-0ad73a00-e25b-11ea-89f4-2a838dc672b5.png" width = 400>
+ 
+ ```python
+ plt.figure(figsize=(12,4))
+subgrade_order = sorted(df['sub_grade'].unique())
+sns.countplot(x='sub_grade',data=df,order = subgrade_order,palette='coolwarm' )
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90669988-322e0700-e25b-11ea-82d1-132d68f15592.png" width = 650>
+
+```python
+plt.figure(figsize=(12,4))
+subgrade_order = sorted(df['sub_grade'].unique())
+sns.countplot(x='sub_grade',data=df,order = subgrade_order,palette='coolwarm' ,hue='loan_status')
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90670111-60abe200-e25b-11ea-9fa5-9bce3763dc96.png" width = 650>
+
+```python
+f_and_g = df[(df['grade']=='G') | (df['grade']=='F')]
+
+plt.figure(figsize=(12,4))
+subgrade_order = sorted(f_and_g['sub_grade'].unique())
+sns.countplot(x='sub_grade',data=f_and_g,order = subgrade_order,hue='loan_status')
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/90670189-820cce00-e25b-11ea-8341-25f8c5a1c1b0.png" width = 650>
+
+```python
+df['loan_status'].unique()
+```
+array(['Fully Paid', 'Charged Off'], dtype=object)
+
+```python
+
+df['loan_repaid'] = df['loan_status'].map({'Fully Paid':1,'Charged Off':0})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
  
 
